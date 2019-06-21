@@ -1,6 +1,6 @@
 package com.wickowski.weatherapp.di
 
-import com.wickowski.weatherapp.domain.weather.GetWeatherUseCase
+import com.wickowski.weatherapp.domain.weather.GetWeatherForecastUseCase
 import com.wickowski.weatherapp.presentation.MainViewModel
 import com.wickowski.weatherapp.repository.net.WeatherApiProvider
 import org.koin.android.ext.koin.androidContext
@@ -12,7 +12,7 @@ val dataModule = module {
 }
 
 val useCasesModule = module {
-    single { GetWeatherUseCase(get()) }
+    single { GetWeatherForecastUseCase(get()) }
 }
 
 val viewModelsModule = module {
