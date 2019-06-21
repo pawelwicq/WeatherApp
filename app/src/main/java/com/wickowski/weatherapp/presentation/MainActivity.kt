@@ -1,27 +1,43 @@
 package com.wickowski.weatherapp.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.wickowski.weatherapp.R
-import com.wickowski.weatherapp.repository.net.QueryBuilder
-import com.wickowski.weatherapp.repository.net.RemoteDataSource
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import org.koin.android.ext.android.inject
+import com.wickowski.weatherapp.presentation.MainViewModel.WeatherState
+import com.wickowski.weatherapp.presentation.MainViewModel.WeatherState.*
+import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    val repository: RemoteDataSource by inject()
+    private val viewModel: MainViewModel by viewModel()
+    private val stateObserver = Observer<WeatherState> { handleWeatherState(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        repository.queryForWeather(QueryBuilder().search("Jasło").build())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { Log.e("DD", it.id  + " "+ it.name) }, { Log.e("ERR", it.localizedMessage); it.printStackTrace() }
-            )
+        searchBtn.setOnClickListener { search(searchEt.text.toString()) }
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.state.observe(this, stateObserver)
+    }
+
+    private fun search(text: String) {
+        if(text.isNotEmpty()) viewModel.loadDataForCity(text)
+    }
+
+    private fun handleWeatherState(state: WeatherState) = when(state) {
+        Loading -> { Toast.makeText(this, "LOADING", Toast.LENGTH_SHORT).show() }
+        is Success -> { Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show() }
+        is Error -> {Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show() }
+    }
+
+
 }
+
+
+
