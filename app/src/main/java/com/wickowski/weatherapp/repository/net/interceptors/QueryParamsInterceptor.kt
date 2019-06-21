@@ -6,7 +6,7 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class ApiKeyInterceptor: Interceptor {
+class QueryParamsInterceptor: Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -15,6 +15,7 @@ class ApiKeyInterceptor: Interceptor {
 
         val url = originalHttpUrl.newBuilder()
             .addQueryParameter("appid", BuildConfig.API_KEY)
+            .addQueryParameter("units", "metric")
             .build()
 
         val requestBuilder = original.newBuilder().url(url)

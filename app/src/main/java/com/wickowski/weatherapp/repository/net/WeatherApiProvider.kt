@@ -5,7 +5,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.wickowski.weatherapp.BuildConfig
-import com.wickowski.weatherapp.repository.net.interceptors.ApiKeyInterceptor
+import com.wickowski.weatherapp.repository.net.interceptors.QueryParamsInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -32,7 +32,7 @@ object WeatherApiProvider {
 
         val builder = OkHttpClient.Builder()
             .readTimeout(10L, TimeUnit.SECONDS)
-            .addInterceptor(ApiKeyInterceptor())
+            .addInterceptor(QueryParamsInterceptor())
             .cache(Cache(cacheFile, 10 * 1024 * 1024))
 
         if (BuildConfig.DEBUG) builder.addInterceptor(loggingInterceptor)
