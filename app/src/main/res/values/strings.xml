@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="search_btn_text">Search</string>
+    <string name="error_settings_change_unavailable">Location settings are inadequate, and cannot be fixed here. Fix in
+        Settings.
+    </string>
 </resources>

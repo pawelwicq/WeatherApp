@@ -6,6 +6,7 @@ import com.wickowski.weatherapp.domain.weather.GetWeatherForecastUseCase
 import com.wickowski.weatherapp.repository.net.WeatherForecast
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.net.UnknownHostException
 
 class MainViewModel(private val getWeatherForecastUseCase: GetWeatherForecastUseCase): ViewModel() {
 
@@ -13,7 +14,17 @@ class MainViewModel(private val getWeatherForecastUseCase: GetWeatherForecastUse
     private var disposable: Disposable? = null
 
     fun loadDataForCity(cityName: String) {
-        disposable = getWeatherForecastUseCase.execute(cityName)
+        disposable?.dispose()
+        disposable = getWeatherForecastUseCase.executeForCityName(cityName)
+            .doOnSubscribe { state.postValue(WeatherState.Loading) }
+            .subscribeOn(Schedulers.io())
+            .subscribe({ state.postValue(WeatherState.Success(it)) }, { state.postValue(WeatherState.Error(it.message ?: "")) })
+    }
+
+    fun loadDataForLocation(latitude: Double, longitude: Double) {
+        disposable?.dispose()
+        disposable = getWeatherForecastUseCase.executeForLocation(latitude, longitude)
+            .doOnSubscribe { state.postValue(WeatherState.Loading) }
             .subscribeOn(Schedulers.io())
             .subscribe({ state.postValue(WeatherState.Success(it)) }, { state.postValue(WeatherState.Error(it.message ?: "")) })
     }

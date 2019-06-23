@@ -7,6 +7,21 @@
         android:layout_height="match_parent"
         tools:context=".presentation.MainActivity">
 
+    <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:layout_constraintBottom_toTopOf="@+id/searchEt"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+
+
     <EditText
 
             android:layout_width="match_parent"
@@ -27,5 +42,15 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"/>
+
+    <Button
+            android:id="@+id/getLocationBtn"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/searchBtn"
+            android:layout_marginTop="16dp"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

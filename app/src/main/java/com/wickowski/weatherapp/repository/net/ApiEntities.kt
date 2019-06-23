@@ -8,7 +8,7 @@ data class WeatherForecast(
     @Json(name = "id") val cityId: String,
     @Json(name = "name") val cityName: String,
     @Json(name = "coord") val cityLocation: CityLocation,
-    val weather: Weather
+    val weather: List<Weather>
 )
 
 data class CityLocation(
@@ -19,6 +19,7 @@ data class CityLocation(
 data class Weather(
     val id: String,
     @Json(name = "main") val condition: WeatherCondition,
+    val icon: String,
     val description: String
 )
 

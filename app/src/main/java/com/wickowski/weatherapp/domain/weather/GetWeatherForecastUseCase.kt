@@ -7,9 +7,15 @@ import io.reactivex.Single
 
 class GetWeatherForecastUseCase(private val api: RemoteDataSource) {
 
-    fun execute(searchQuery: String): Single<WeatherForecast> = api.getWeatherForecast(
+    fun executeForCityName(searchQuery: String): Single<WeatherForecast> = api.getWeatherForecast(
         QueryBuilder()
             .searchWithCityName(searchQuery)
+            .build()
+    )
+
+    fun executeForLocation(lat: Double, lon: Double): Single<WeatherForecast> = api.getWeatherForecast(
+        QueryBuilder()
+            .searchWithLocation(lat, lon)
             .build()
     )
 
