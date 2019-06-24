@@ -19,14 +19,17 @@ import com.google.android.gms.location.LocationServices
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wickowski.weatherapp.R
 import com.wickowski.weatherapp.utils.LocationUtils
-import com.wickowski.weatherapp.utils.getText
 import com.wickowski.weatherapp.utils.showToast
 import com.wickowski.weatherapp.utils.turnGPSOn
 import kotlinx.android.synthetic.main.fragment_weather_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.wickowski.weatherapp.presentation.search.WeatherSearchViewModel.WeatherState.*
+import com.wickowski.weatherapp.presentation.search.WeatherSearchViewModel.LastSearchState.*
+import com.wickowski.weatherapp.presentation.search.WeatherSearchViewModel.LastSearchState
+import com.wickowski.weatherapp.utils.getText
 import kotlinx.android.synthetic.main.layout_last_search_card_content.*
 import java.lang.IllegalStateException
+import kotlin.math.roundToInt
 
 
 private const val GPS_REQUEST_CODE = 1000
@@ -40,6 +43,7 @@ class WeatherSearchFragment : Fragment(), GoogleApiClient.ConnectionCallbacks,
 
     private val viewModel: WeatherSearchViewModel by viewModel()
     private val stateObserver = Observer<WeatherSearchViewModel.WeatherState> { handleWeatherState(it) }
+    private val lastSearchObserver = Observer<LastSearchState> { handleLastSearch(it) }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -65,7 +69,9 @@ class WeatherSearchFragment : Fragment(), GoogleApiClient.ConnectionCallbacks,
 
     override fun onResume() {
         super.onResume()
-        viewModel.state.observe(this, stateObserver)
+        viewModel.weatherSearchState.observe(viewLifecycleOwner, stateObserver)
+        viewModel.lastSearchState.observe(viewLifecycleOwner, lastSearchObserver)
+        viewModel.loadLastCityForecast()
     }
 
     private fun initView() {
@@ -95,20 +101,23 @@ class WeatherSearchFragment : Fragment(), GoogleApiClient.ConnectionCallbacks,
     private fun getLocation() = fusedLocationClient.requestLocationUpdates(LocationUtils.buildLocationRequest(), locationCallback, null)
 
     private fun search(text: String) {
-        if (text.isNotEmpty()) viewModel.loadDataForCity(text)
+        if (text.isNotEmpty()) viewModel.loadDataForCityName(text)
     }
 
     private fun handleWeatherState(state: WeatherSearchViewModel.WeatherState) = when (state) {
         Loading -> showToast("LOADING")
-        is Success -> {
-            with(state.weatherForecast) {
-                lastSearchCard.visibility = View.VISIBLE
-                lastSearchCityName.text = cityName
-                lastSearchTemperature.text = "26"
-                lastSearchWeatherIcon.setAnimation("${weather[0].icon}.json")
-            }
-        }
+        is Success -> { showToast("SUCCESS") }
         is Error -> showToast("ERR")
+    }
+
+    private fun handleLastSearch(state: LastSearchState) = when(state) {
+        is LastSearchForecast -> with(state.weatherForecast) {
+            lastSearchCard.visibility = View.VISIBLE
+            lastSearchCityName.text = cityName
+            lastSearchTemperature.text = getString(R.string.temperature_string_pattern, main.temp.roundToInt())
+            lastSearchWeatherIcon.setAnimation("${weather[0].icon}.json")
+        }
+        is LastSearchForecastError -> lastSearchCard.visibility = View.INVISIBLE
     }
 
     override fun onConnected(bundle: Bundle?) {

@@ -2,6 +2,7 @@ package com.wickowski.weatherapp.repository.net
 
 
 private const val SEARCH_QUERY_TEXT = "q"
+private const val SEARCH_QUERY_ID = "id"
 private const val SEARCH_QUERY_LATITUDE = "lat"
 private const val SEARCH_QUERY_LONGITUDE = "lon"
 
@@ -11,6 +12,10 @@ class QueryBuilder {
 
     fun searchWithCityName(city: String) = apply {
         queryMap[SEARCH_QUERY_TEXT] = city
+    }
+
+    fun searchWithCityId(id: String) = apply {
+        queryMap[SEARCH_QUERY_ID] = id
     }
 
     fun searchWithLocation(lat: Double, lon: Double) = apply {

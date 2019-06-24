@@ -7,4 +7,5 @@
     <string name="search_hint">Type city name</string>
     <string name="missing_permissions_error">Missing GPS permission</string>
     <string name="last_search_card_title">Last search:</string>
+    <string name="temperature_string_pattern">%1$d\u2103</string>
 </resources>
