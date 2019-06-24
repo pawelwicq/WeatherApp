@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="@dimen/content_padding"
+        android:orientation="vertical">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_search_card_title"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lastSearchWeatherIcon"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"/>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:id="@+id/lastSearchCityName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    tools:text="Warsaw"/>
+
+            <TextView
+                    android:id="@+id/lastSearchWeather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    tools:text="Partly Cloudy"/>
+
+        </LinearLayout>
+
+
+        <TextView
+                android:id="@+id/lastSearchTemperature"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="25sp"
+                tools:text="27"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.wickowski.weatherapp.utils
 
+import android.app.Activity
 import android.widget.Toast
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import android.content.IntentSender
@@ -11,10 +12,14 @@ import android.content.Context.LOCATION_SERVICE
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputLayout
 import com.wickowski.weatherapp.R
 
+fun Fragment.turnGPSOn(requestCode: Int, gpsStatusChanged: (Boolean) -> Unit) {
+    activity?.turnGPSOn(requestCode, gpsStatusChanged)
+}
 
-fun AppCompatActivity.turnGPSOn(requestCode: Int, gpsStatusChanged: (Boolean) -> Unit) {
+fun Activity.turnGPSOn(requestCode: Int, gpsStatusChanged: (Boolean) -> Unit) {
     val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -46,5 +51,7 @@ fun AppCompatActivity.turnGPSOn(requestCode: Int, gpsStatusChanged: (Boolean) ->
 
 fun Fragment.showToast(message: String) = Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 
-fun AppCompatActivity.showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+fun Activity.showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+fun TextInputLayout.getText() = this.editText?.text.toString()
 

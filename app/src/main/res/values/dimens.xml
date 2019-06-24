@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="content_padding">16dp</dimen>
+    <dimen name="button_min_height">56dp</dimen>
+    <dimen name="last_search_card_height">96dp</dimen>
+</resources>

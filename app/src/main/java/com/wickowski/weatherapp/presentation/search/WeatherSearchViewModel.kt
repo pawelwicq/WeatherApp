@@ -1,4 +1,4 @@
-package com.wickowski.weatherapp.presentation
+package com.wickowski.weatherapp.presentation.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -6,9 +6,8 @@ import com.wickowski.weatherapp.domain.weather.GetWeatherForecastUseCase
 import com.wickowski.weatherapp.repository.net.WeatherForecast
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.net.UnknownHostException
 
-class MainViewModel(private val getWeatherForecastUseCase: GetWeatherForecastUseCase): ViewModel() {
+class WeatherSearchViewModel(private val getWeatherForecastUseCase: GetWeatherForecastUseCase): ViewModel() {
 
     val state = MutableLiveData<WeatherState>()
     private var disposable: Disposable? = null
@@ -18,7 +17,15 @@ class MainViewModel(private val getWeatherForecastUseCase: GetWeatherForecastUse
         disposable = getWeatherForecastUseCase.executeForCityName(cityName)
             .doOnSubscribe { state.postValue(WeatherState.Loading) }
             .subscribeOn(Schedulers.io())
-            .subscribe({ state.postValue(WeatherState.Success(it)) }, { state.postValue(WeatherState.Error(it.message ?: "")) })
+            .subscribe({ state.postValue(
+                WeatherState.Success(
+                    it
+                )
+            ) }, { state.postValue(
+                WeatherState.Error(
+                    it.message ?: ""
+                )
+            ) })
     }
 
     fun loadDataForLocation(latitude: Double, longitude: Double) {
@@ -26,7 +33,15 @@ class MainViewModel(private val getWeatherForecastUseCase: GetWeatherForecastUse
         disposable = getWeatherForecastUseCase.executeForLocation(latitude, longitude)
             .doOnSubscribe { state.postValue(WeatherState.Loading) }
             .subscribeOn(Schedulers.io())
-            .subscribe({ state.postValue(WeatherState.Success(it)) }, { state.postValue(WeatherState.Error(it.message ?: "")) })
+            .subscribe({ state.postValue(
+                WeatherState.Success(
+                    it
+                )
+            ) }, { state.postValue(
+                WeatherState.Error(
+                    it.message ?: ""
+                )
+            ) })
     }
 
     override fun onCleared() {

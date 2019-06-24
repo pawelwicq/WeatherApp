@@ -4,4 +4,7 @@
     <string name="error_settings_change_unavailable">Location settings are inadequate, and cannot be fixed here. Fix in
         Settings.
     </string>
+    <string name="search_hint">Type city name</string>
+    <string name="missing_permissions_error">Missing GPS permission</string>
+    <string name="last_search_card_title">Last search:</string>
 </resources>
