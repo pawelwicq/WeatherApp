@@ -60,6 +60,7 @@ class WeatherSearchViewModel(
     override fun onCleared() {
         super.onCleared()
         searchDisposable?.dispose()
+        lastSearchDisposable?.dispose()
     }
 
     sealed class WeatherState {
