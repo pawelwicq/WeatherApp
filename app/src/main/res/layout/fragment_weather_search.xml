@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:background="@drawable/background_gradient"
-        android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools"
+        android:background="@drawable/background_gradient" android:layout_height="match_parent"
         android:padding="@dimen/content_padding"
         android:animateLayoutChanges="true">
 
@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             app:lottie_autoPlay="true"
-            app:lottie_loop="false"
+            app:lottie_repeatCount="3"
             app:lottie_fileName="sunny.json"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,8 @@
             style="@style/ColoredButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchInput" app:layout_constraintHorizontal_bias="1.0"/>
+            app:layout_constraintTop_toBottomOf="@+id/searchInput"
+            app:layout_constraintHorizontal_bias="1.0"/>
 
     <com.google.android.material.button.MaterialButton
             android:id="@+id/getLocationBtn"
@@ -56,7 +57,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchInput"
-            app:layout_constraintBottom_toTopOf="@+id/lastSearchCard" app:layout_constraintVertical_bias="0.9"/>
+            app:layout_constraintBottom_toTopOf="@+id/lastSearchCard"
+            app:layout_constraintVertical_bias="0.9"/>
+
 
     <com.google.android.material.card.MaterialCardView
             android:id="@+id/lastSearchCard"

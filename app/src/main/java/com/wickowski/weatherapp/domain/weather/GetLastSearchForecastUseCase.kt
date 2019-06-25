@@ -1,6 +1,5 @@
 package com.wickowski.weatherapp.domain.weather
 
-import com.wickowski.weatherapp.repository.net.RemoteDataSource
 import com.wickowski.weatherapp.repository.shared_prefs.SearchHistoryProvider
 import io.reactivex.Single
 

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.airbnb.lottie.LottieDrawable
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -105,12 +106,17 @@ class WeatherSearchFragment : Fragment(), GoogleApiClient.ConnectionCallbacks,
     }
 
     private fun handleWeatherState(state: WeatherSearchViewModel.WeatherState) = when (state) {
-        Loading -> showToast("LOADING")
+        Loading ->{
+            showToast("LOADING")
+        }
         is Success -> { showToast("SUCCESS") }
-        is Error -> showToast("ERR")
+        is Error ->  {
+            showToast("ERR")
+        }
     }
 
     private fun handleLastSearch(state: LastSearchState) = when(state) {
+        EmptyLastSearchForecast -> lastSearchCard.visibility = View.INVISIBLE
         is LastSearchForecast -> with(state.weatherForecast) {
             lastSearchCard.visibility = View.VISIBLE
             lastSearchCityName.text = cityName

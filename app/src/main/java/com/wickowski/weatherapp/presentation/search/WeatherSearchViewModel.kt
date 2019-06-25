@@ -48,8 +48,12 @@ class WeatherSearchViewModel(
         lastSearchDisposable = getLastSearchCityIdUseCase.execute()
             .subscribeOn(Schedulers.io())
             .flatMapMaybe {
-                if (it.isNotEmpty()) getWeatherForecastUseCase.executeForCityId(it).toMaybe()
-                else Maybe.empty()
+                if (it.isNotEmpty()) {
+                    getWeatherForecastUseCase.executeForCityId(it).toMaybe()
+                } else {
+                    lastSearchState.postValue(LastSearchState.EmptyLastSearchForecast)
+                    Maybe.empty()
+                }
             }
             .subscribe(
                 { lastSearchState.postValue(LastSearchState.LastSearchForecast(it)) },
@@ -70,6 +74,7 @@ class WeatherSearchViewModel(
     }
 
     sealed class LastSearchState {
+        object EmptyLastSearchForecast : LastSearchState()
         data class LastSearchForecast(val weatherForecast: WeatherForecast) : LastSearchState()
         data class LastSearchForecastError(val message: String) : LastSearchState()
     }

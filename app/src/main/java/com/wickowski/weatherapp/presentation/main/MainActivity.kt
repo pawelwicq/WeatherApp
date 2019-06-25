@@ -1,4 +1,4 @@
-package com.wickowski.weatherapp.presentation
+package com.wickowski.weatherapp.presentation.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
