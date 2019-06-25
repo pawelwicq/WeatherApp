@@ -2,16 +2,16 @@ package com.wickowski.weatherapp.presentation.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.wickowski.weatherapp.domain.weather.GetLastSearchCityIdUseCase
-import com.wickowski.weatherapp.domain.weather.GetWeatherForecastUseCase
-import com.wickowski.weatherapp.domain.weather.SaveLastSearchCityIdUseCase
-import com.wickowski.weatherapp.repository.net.WeatherForecast
+import com.wickowski.weatherapp.domain.search_history.GetLastSearchCityIdUseCase
+import com.wickowski.weatherapp.domain.current_weather.GetCurrentWeatherUseCase
+import com.wickowski.weatherapp.domain.search_history.SaveLastSearchCityIdUseCase
+import com.wickowski.weatherapp.presentation.CityCurrentWeather
 import io.reactivex.Maybe
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class WeatherSearchViewModel(
-    private val getWeatherForecastUseCase: GetWeatherForecastUseCase,
+    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
     private val getLastSearchCityIdUseCase: GetLastSearchCityIdUseCase,
     private val saveLastSearchCityIdUseCase: SaveLastSearchCityIdUseCase
 ) : ViewModel() {
@@ -23,7 +23,7 @@ class WeatherSearchViewModel(
 
     fun loadDataForCityName(cityName: String) {
         searchDisposable?.dispose()
-        searchDisposable = getWeatherForecastUseCase.executeForCityName(cityName)
+        searchDisposable = getCurrentWeatherUseCase.executeForCityName(cityName)
             .doOnSubscribe { weatherSearchState.postValue(WeatherState.Loading) }
             .subscribeOn(Schedulers.io())
             .flatMapCompletable {
@@ -34,7 +34,7 @@ class WeatherSearchViewModel(
 
     fun loadDataForLocation(latitude: Double, longitude: Double) {
         searchDisposable?.dispose()
-        searchDisposable = getWeatherForecastUseCase.executeForLocation(latitude, longitude)
+        searchDisposable = getCurrentWeatherUseCase.executeForLocation(latitude, longitude)
             .doOnSubscribe { weatherSearchState.postValue(WeatherState.Loading) }
             .subscribeOn(Schedulers.io())
             .flatMapCompletable {
@@ -49,7 +49,7 @@ class WeatherSearchViewModel(
             .subscribeOn(Schedulers.io())
             .flatMapMaybe {
                 if (it.isNotEmpty()) {
-                    getWeatherForecastUseCase.executeForCityId(it).toMaybe()
+                    getCurrentWeatherUseCase.executeForCityId(it).toMaybe()
                 } else {
                     lastSearchState.postValue(LastSearchState.EmptyLastSearchForecast)
                     Maybe.empty()
@@ -70,12 +70,12 @@ class WeatherSearchViewModel(
     sealed class WeatherState {
         object Loading : WeatherState()
         data class Error(val message: String) : WeatherState()
-        data class Success(val weatherForecast: WeatherForecast) : WeatherState()
+        data class Success(val currentWeather: CityCurrentWeather) : WeatherState()
     }
 
     sealed class LastSearchState {
         object EmptyLastSearchForecast : LastSearchState()
-        data class LastSearchForecast(val weatherForecast: WeatherForecast) : LastSearchState()
+        data class LastSearchForecast(val currentWeather: CityCurrentWeather) : LastSearchState()
         data class LastSearchForecastError(val message: String) : LastSearchState()
     }
 

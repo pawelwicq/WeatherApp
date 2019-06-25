@@ -1,8 +1,9 @@
 package com.wickowski.weatherapp.di
 
-import com.wickowski.weatherapp.domain.weather.GetLastSearchCityIdUseCase
-import com.wickowski.weatherapp.domain.weather.GetWeatherForecastUseCase
-import com.wickowski.weatherapp.domain.weather.SaveLastSearchCityIdUseCase
+import com.wickowski.weatherapp.domain.search_history.GetLastSearchCityIdUseCase
+import com.wickowski.weatherapp.domain.current_weather.GetCurrentWeatherUseCase
+import com.wickowski.weatherapp.domain.search_history.SaveLastSearchCityIdUseCase
+import com.wickowski.weatherapp.presentation.city_weather_details.CityWeatherDetailsViewModel
 import com.wickowski.weatherapp.presentation.search.WeatherSearchViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,11 +15,12 @@ val dataModule = module {
 }
 
 val useCasesModule = module {
-    single { GetWeatherForecastUseCase(get()) }
+    single { GetCurrentWeatherUseCase(get()) }
     single { GetLastSearchCityIdUseCase(get()) }
     single { SaveLastSearchCityIdUseCase(get()) }
 }
 
 val viewModelsModule = module {
     viewModel { WeatherSearchViewModel(get(), get(), get()) }
+    viewModel { (cityId: String) -> CityWeatherDetailsViewModel(cityId, get()) }
 }

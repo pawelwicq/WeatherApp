@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.airbnb.lottie.LottieDrawable
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wickowski.weatherapp.R
+import com.wickowski.weatherapp.presentation.city_weather_details.CityWeatherDetailsFragment
 import com.wickowski.weatherapp.utils.LocationUtils
 import com.wickowski.weatherapp.utils.showToast
 import com.wickowski.weatherapp.utils.turnGPSOn
@@ -30,7 +31,6 @@ import com.wickowski.weatherapp.presentation.search.WeatherSearchViewModel.LastS
 import com.wickowski.weatherapp.utils.getText
 import kotlinx.android.synthetic.main.layout_last_search_card_content.*
 import java.lang.IllegalStateException
-import kotlin.math.roundToInt
 
 
 private const val GPS_REQUEST_CODE = 1000
@@ -109,7 +109,9 @@ class WeatherSearchFragment : Fragment(), GoogleApiClient.ConnectionCallbacks,
         Loading ->{
             showToast("LOADING")
         }
-        is Success -> { showToast("SUCCESS") }
+        is Success -> {
+            findNavController().navigate(R.id.openWeatherDetailsFragment, CityWeatherDetailsFragment.createBundle(state.currentWeather.cityId))
+        }
         is Error ->  {
             showToast("ERR")
         }
@@ -117,11 +119,11 @@ class WeatherSearchFragment : Fragment(), GoogleApiClient.ConnectionCallbacks,
 
     private fun handleLastSearch(state: LastSearchState) = when(state) {
         EmptyLastSearchForecast -> lastSearchCard.visibility = View.INVISIBLE
-        is LastSearchForecast -> with(state.weatherForecast) {
+        is LastSearchForecast -> with(state.currentWeather) {
             lastSearchCard.visibility = View.VISIBLE
             lastSearchCityName.text = cityName
-            lastSearchTemperature.text = getString(R.string.temperature_string_pattern, main.temp.roundToInt())
-            lastSearchWeatherIcon.setAnimation("${weather[0].icon}.json")
+            lastSearchTemperature.text = getString(R.string.temperature_string_pattern, temperature)
+            lastSearchWeatherIcon.setAnimation(weatherIcon)
         }
         is LastSearchForecastError -> lastSearchCard.visibility = View.INVISIBLE
     }

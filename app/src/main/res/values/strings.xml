@@ -8,4 +8,19 @@
     <string name="missing_permissions_error">Missing GPS permission</string>
     <string name="last_search_card_title">Last search:</string>
     <string name="temperature_string_pattern">%1$d\u2103</string>
+    <string name="thunderstorm">thunderstorm</string>
+    <string name="drizzle">drizzle</string>
+    <string name="rain">rain</string>
+    <string name="snow">snow</string>
+    <string name="mist">mist</string>
+    <string name="smoke">smoke</string>
+    <string name="haze">haze</string>
+    <string name="dust">dust</string>
+    <string name="fog">fog</string>
+    <string name="sand">sand</string>
+    <string name="ash">ash</string>
+    <string name="squall">squall</string>
+    <string name="tornado">tornado</string>
+    <string name="clear">clear</string>
+    <string name="clouds">clouds</string>
 </resources>
