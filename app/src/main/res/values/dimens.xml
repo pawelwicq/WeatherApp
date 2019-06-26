@@ -14,9 +14,10 @@
     <dimen name="text_l">16sp</dimen>
     <dimen name="text_xl">18sp</dimen>
     <dimen name="text_xxl">20sp</dimen>
+    <dimen name="text_xxxl">25sp</dimen>
 
     <dimen name="content_padding">16dp</dimen>
     <dimen name="button_min_height">56dp</dimen>
-    <dimen name="last_search_card_height">96dp</dimen>
+    <dimen name="last_search_card_height">126dp</dimen>
 
 </resources>

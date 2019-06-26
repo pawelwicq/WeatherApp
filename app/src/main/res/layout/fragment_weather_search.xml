@@ -11,7 +11,7 @@
     <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/logo"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             app:lottie_autoPlay="true"
             app:lottie_repeatCount="3"
             app:lottie_fileName="sunny.json"
@@ -26,12 +26,16 @@
             app:layout_constraintTop_toBottomOf="@+id/logo"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            style="@style/TextInputLayout.Dark">
+            app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/ic_clear_black"
+            app:endIconTint="@color/text_light"
+            style="@style/TextInputLayout.Light">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/search_hint"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                style="@style/LightEditText"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,7 +56,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_marginBottom="8dp"
-            android:text="Use my location"
+            android:text="@string/use_my_location"
             style="@style/TextButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +70,10 @@
             android:layout_width="match_parent"
             android:visibility="invisible"
             android:layout_height="@dimen/last_search_card_height"
+            android:background="?attr/selectableItemBackground"
             android:layout_marginBottom="@dimen/content_padding"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -7,7 +7,8 @@
     <string name="search_hint">Type city name</string>
     <string name="missing_permissions_error">Missing GPS permission</string>
     <string name="last_search_card_title">Last search:</string>
-    <string name="temperature_string_pattern">%1$d\u2103</string>
+    <string name="celsius_temperature">%1$d\u2103</string>
+
     <string name="thunderstorm">thunderstorm</string>
     <string name="drizzle">drizzle</string>
     <string name="rain">rain</string>
@@ -23,4 +24,6 @@
     <string name="tornado">tornado</string>
     <string name="clear">clear</string>
     <string name="clouds">clouds</string>
+    <string name="use_my_location">Use my location</string>
+
 </resources>

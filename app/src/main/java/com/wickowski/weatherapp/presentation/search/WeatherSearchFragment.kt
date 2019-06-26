@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wickowski.weatherapp.R
+import com.wickowski.weatherapp.presentation.CityCurrentWeather
 import com.wickowski.weatherapp.presentation.city_weather_details.CityWeatherDetailsFragment
 import com.wickowski.weatherapp.utils.LocationUtils
 import com.wickowski.weatherapp.utils.showToast
@@ -31,16 +32,13 @@ import com.wickowski.weatherapp.presentation.search.WeatherSearchViewModel.LastS
 import com.wickowski.weatherapp.utils.getText
 import kotlinx.android.synthetic.main.layout_last_search_card_content.*
 import java.lang.IllegalStateException
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener
 
 
 private const val GPS_REQUEST_CODE = 1000
 
-class WeatherSearchFragment : Fragment(), GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener {
-
-    companion object {
-        fun newInstance() = WeatherSearchFragment()
-    }
+class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFailedListener {
 
     private val viewModel: WeatherSearchViewModel by viewModel()
     private val stateObserver = Observer<WeatherSearchViewModel.WeatherState> { handleWeatherState(it) }
@@ -94,39 +92,55 @@ class WeatherSearchFragment : Fragment(), GoogleApiClient.ConnectionCallbacks,
     private fun getWeatherForCurrentLocation() = RxPermissions(this).request(
         Manifest.permission.ACCESS_FINE_LOCATION
     ).subscribe { granted ->
-        if (granted) turnGPSOn(GPS_REQUEST_CODE) { isOn -> if(isOn) getLocation() }
+        if (granted) turnGPSOn(GPS_REQUEST_CODE) { isOn -> if (isOn) getLocation() }
         else showToast(getString(R.string.missing_permissions_error))
     }
 
     @SuppressLint("MissingPermission")  // permissions are already checked by rxpermissions
-    private fun getLocation() = fusedLocationClient.requestLocationUpdates(LocationUtils.buildLocationRequest(), locationCallback, null)
+    private fun getLocation() = fusedLocationClient.requestLocationUpdates(
+        LocationUtils.buildLocationRequest(),
+        locationCallback,
+        null
+    )
 
     private fun search(text: String) {
         if (text.isNotEmpty()) viewModel.loadDataForCityName(text)
     }
 
     private fun handleWeatherState(state: WeatherSearchViewModel.WeatherState) = when (state) {
-        Loading ->{
+        Loading -> {
             showToast("LOADING")
         }
         is Success -> {
-            findNavController().navigate(R.id.openWeatherDetailsFragment, CityWeatherDetailsFragment.createBundle(state.currentWeather.cityId))
+            navigateToCityDetails(state.currentWeather.cityId)
         }
-        is Error ->  {
+        is Error -> {
             showToast("ERR")
+        }
+        Idle -> Unit
+    }
+
+    private fun handleLastSearch(state: LastSearchState) = when (state) {
+        EmptyLastSearchForecast -> lastSearchCard.visibility = View.INVISIBLE
+        is LastSearchForecast -> fillLastSearchCardData(state.currentWeather)
+        is LastSearchForecastError -> lastSearchCard.visibility = View.INVISIBLE
+    }
+
+    private fun fillLastSearchCardData(currentWeather: CityCurrentWeather) = with(currentWeather) {
+        lastSearchCard.visibility = View.VISIBLE
+        lastSearchCityName.text = cityName
+        lastSearchWeather.text = getString(conditionStringRes)
+        lastSearchTemperature.text = getString(R.string.celsius_temperature, temperature)
+        lastSearchWeatherIcon.setAnimation(weatherIcon)
+        lastSearchCard.setOnClickListener {
+            navigateToCityDetails(cityId)
         }
     }
 
-    private fun handleLastSearch(state: LastSearchState) = when(state) {
-        EmptyLastSearchForecast -> lastSearchCard.visibility = View.INVISIBLE
-        is LastSearchForecast -> with(state.currentWeather) {
-            lastSearchCard.visibility = View.VISIBLE
-            lastSearchCityName.text = cityName
-            lastSearchTemperature.text = getString(R.string.temperature_string_pattern, temperature)
-            lastSearchWeatherIcon.setAnimation(weatherIcon)
-        }
-        is LastSearchForecastError -> lastSearchCard.visibility = View.INVISIBLE
-    }
+    private fun navigateToCityDetails(cityId: String) = findNavController().navigate(
+        R.id.openWeatherDetailsFragment,
+        CityWeatherDetailsFragment.createBundle(cityId)
+    )
 
     override fun onConnected(bundle: Bundle?) {
         getLocationBtn.visibility = View.VISIBLE

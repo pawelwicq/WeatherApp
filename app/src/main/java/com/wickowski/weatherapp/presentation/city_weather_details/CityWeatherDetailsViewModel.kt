@@ -26,7 +26,6 @@ class CityWeatherDetailsViewModel(
             })
     }
 
-
     sealed class CityWeatherDetailsState {
         object Loading: CityWeatherDetailsState()
         data class Success(val currentWeather: CityCurrentWeather): CityWeatherDetailsState()

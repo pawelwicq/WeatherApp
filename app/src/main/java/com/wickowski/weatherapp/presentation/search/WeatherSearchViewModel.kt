@@ -28,6 +28,7 @@ class WeatherSearchViewModel(
             .subscribeOn(Schedulers.io())
             .flatMapCompletable {
                 weatherSearchState.postValue(WeatherState.Success(it))
+                weatherSearchState.postValue(WeatherState.Idle)
                 saveLastSearchCityIdUseCase.execute(it.cityId)
             }.subscribe({ }, { weatherSearchState.postValue(WeatherState.Error(it.message ?: "")) })
     }
@@ -39,6 +40,7 @@ class WeatherSearchViewModel(
             .subscribeOn(Schedulers.io())
             .flatMapCompletable {
                 weatherSearchState.postValue(WeatherState.Success(it))
+                weatherSearchState.postValue(WeatherState.Idle)
                 saveLastSearchCityIdUseCase.execute(it.cityId)
             }
             .subscribe({ }, { weatherSearchState.postValue(WeatherState.Error(it.message ?: "")) })
@@ -71,6 +73,7 @@ class WeatherSearchViewModel(
         object Loading : WeatherState()
         data class Error(val message: String) : WeatherState()
         data class Success(val currentWeather: CityCurrentWeather) : WeatherState()
+        object Idle : WeatherState()
     }
 
     sealed class LastSearchState {
