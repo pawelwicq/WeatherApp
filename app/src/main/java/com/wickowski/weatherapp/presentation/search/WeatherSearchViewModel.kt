@@ -1,9 +1,7 @@
 package com.wickowski.weatherapp.presentation.search
 
 import androidx.annotation.StringRes
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.hadilq.liveevent.LiveEvent
 import com.wickowski.weatherapp.domain.search_history.GetLastSearchCityIdUseCase
 import com.wickowski.weatherapp.domain.current_weather.GetCurrentWeatherUseCase
@@ -21,12 +19,23 @@ class WeatherSearchViewModel(
     private val mapErrorUseCase: MapErrorUseCase
 ) : ViewModel() {
 
-    val weatherSearchState = MutableLiveData<WeatherSearchState>()
-    val lastSearchState = MutableLiveData<CityCurrentWeather>()
-    val searchResultEvent= MutableLiveData<CityCurrentWeather?>()
+    private val weatherSearchState = MutableLiveData<WeatherSearchState>()
+    private val lastSearchState = MutableLiveData<CityCurrentWeather>()
+    private val searchResultEvent= MutableLiveData<CityCurrentWeather?>()
 
     private var searchDisposable: Disposable? = null
     private var lastSearchDisposable: Disposable? = null
+
+    fun observeSearchState(viewLifecycleOwner: LifecycleOwner, observer: Observer<WeatherSearchState>)
+            = weatherSearchState.observe(viewLifecycleOwner, observer)
+
+    fun observeLastSearchState(viewLifecycleOwner: LifecycleOwner, observer: Observer<CityCurrentWeather>)
+            = lastSearchState.observe(viewLifecycleOwner, observer)
+
+    fun observeSearchResultEvent(viewLifecycleOwner: LifecycleOwner, observer: Observer<CityCurrentWeather?>) {
+        searchResultEvent.value = null
+        searchResultEvent.observe(viewLifecycleOwner, observer)
+    }
 
     fun loadDataForCityName(cityName: String) {
         weatherSearchState.postValue(WeatherSearchState.Loading)

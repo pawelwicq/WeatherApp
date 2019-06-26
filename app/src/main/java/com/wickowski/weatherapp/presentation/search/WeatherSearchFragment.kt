@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,10 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
 
     private val viewModel: WeatherSearchViewModel by viewModel()
     private val stateObserver = Observer<WeatherSearchViewModel.WeatherSearchState> { handleWeatherState(it) }
-    private val searchResultObserver = Observer<CityCurrentWeather?> { handleSearchResult(it) }
+    private val searchResultObserver = Observer<CityCurrentWeather?> {
+        Log.e("ERR", "$it")
+        handleSearchResult(it)
+    }
     private val lastSearchObserver = Observer<CityCurrentWeather> { handleLastSearch(it) }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -67,9 +71,9 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
 
     override fun onResume() {
         super.onResume()
-        viewModel.weatherSearchState.observe(viewLifecycleOwner, stateObserver)
-        viewModel.lastSearchState.observe(viewLifecycleOwner, lastSearchObserver)
-        viewModel.searchResultEvent.observe(viewLifecycleOwner, searchResultObserver)
+        viewModel.observeSearchState(viewLifecycleOwner, stateObserver)
+        viewModel.observeLastSearchState(viewLifecycleOwner, lastSearchObserver)
+        viewModel.observeSearchResultEvent(viewLifecycleOwner, searchResultObserver)
         viewModel.loadLastCityForecast()
     }
 
@@ -135,8 +139,7 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
     }
 
     private fun handleSearchResult(weather: CityCurrentWeather?) = weather?.cityId?.let {
-        viewModel.searchResultEvent.value = null
-        if(isVisible) navigateToCityDetails(it)
+        navigateToCityDetails(it)
     }
 
     private fun navigateToCityDetails(cityId: String) = view?.findNavController()?.navigate(
