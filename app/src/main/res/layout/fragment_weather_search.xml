@@ -4,8 +4,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:background="@drawable/background_gradient" android:layout_height="match_parent"
-        android:padding="@dimen/content_padding"
+        android:layout_height="match_parent"
+        android:padding="@dimen/space_content"
         android:animateLayoutChanges="true">
 
     <com.airbnb.lottie.LottieAnimationView
@@ -57,6 +57,9 @@
             android:visibility="gone"
             android:layout_marginBottom="8dp"
             android:text="@string/use_my_location"
+            app:icon="@drawable/ic_location"
+            app:iconGravity="start"
+            app:iconTint="@color/text_light"
             style="@style/TextButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +74,7 @@
             android:visibility="invisible"
             android:layout_height="@dimen/last_search_card_height"
             android:background="?attr/selectableItemBackground"
-            android:layout_marginBottom="@dimen/content_padding"
+            android:layout_marginBottom="@dimen/space_content"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"

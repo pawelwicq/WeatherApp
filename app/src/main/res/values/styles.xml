@@ -8,14 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:maxLines">1</item>
         <item name="errorEnabled">true</item>
         <item name="hintAnimationEnabled">true</item>
     </style>
 
     <style name="TextInputLayout.Light">
-        <item name="boxStrokeColor">@color/text_light</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke_accent</item>
         <item name="hintTextColor">@color/text_light</item>
         <item name="android:textColor">@color/text_light</item>
         <item name="android:textColorHint">@color/text_light</item>

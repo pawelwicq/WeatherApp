@@ -4,7 +4,7 @@
     <color name="colorBackgroundDark">#006064</color>
     <color name="colorPrimary">#26A69A</color>
     <color name="colorPrimaryDark">#006064</color>
-    <color name="colorAccent">#FFB300</color>
+    <color name="colorAccent">#FFB300</color>joh
 
     <color name="text_regular">@android:color/black</color>
     <color name="text_light">@android:color/white</color>

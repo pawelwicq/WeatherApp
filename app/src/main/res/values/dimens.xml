@@ -15,9 +15,11 @@
     <dimen name="text_xl">18sp</dimen>
     <dimen name="text_xxl">20sp</dimen>
     <dimen name="text_xxxl">25sp</dimen>
+    <dimen name="text_super_large">30sp</dimen>
 
-    <dimen name="content_padding">16dp</dimen>
     <dimen name="button_min_height">56dp</dimen>
     <dimen name="last_search_card_height">126dp</dimen>
+    <dimen name="tall_toolbar_height">200dp</dimen>
+    <dimen name="weather_details_icon_size">80dp</dimen>
 
 </resources>
