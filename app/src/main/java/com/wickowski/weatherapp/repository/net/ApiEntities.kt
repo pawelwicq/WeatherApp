@@ -8,13 +8,17 @@ data class WeatherForecast(
     @Json(name = "id") val cityId: String,
     @Json(name = "name") val cityName: String,
     val weather: List<Weather>,
-    val main: MainForecastInfo
+    val main: MainForecastInfo,
+    val wind: WindInfo
 )
 
 data class MainForecastInfo(
     @Json(name = "temp") val temp: Double,
+    val humidity: Int,
     val pressure: Int
 )
+
+data class WindInfo(val speed: Double)
 
 data class Weather(
     val id: String,

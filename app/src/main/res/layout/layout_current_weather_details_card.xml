@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/space_content">
 
     <TextView
             android:id="@+id/city"
@@ -12,41 +14,51 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_super_large"
             tools:text="Warszawa"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
 
     <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/currentWeatherIcon"
             android:layout_width="@dimen/weather_details_icon_size"
             android:layout_height="@dimen/weather_details_icon_size"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true" app:layout_constraintTop_toBottomOf="@+id/city"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"/>
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:layout_constraintTop_toBottomOf="@+id/city"
+            app:layout_constraintStart_toStartOf="parent"/>
+
 
     <TextView
             android:id="@+id/currentWeatherDescription"
             android:textSize="@dimen/text_xl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             tools:text="Thunderstorm"
-            app:layout_constraintBottom_toBottomOf="@+id/currentWeatherIcon" android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/currentWeatherIcon"
             app:layout_constraintEnd_toStartOf="@+id/temperatureValue"
-            app:layout_constraintStart_toEndOf="@+id/currentWeatherIcon" android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="@+id/currentWeatherIcon" app:layout_constraintHorizontal_bias="0.1"/>
+            app:layout_constraintStart_toEndOf="@+id/currentWeatherIcon"
+            app:layout_constraintTop_toTopOf="@+id/currentWeatherIcon"
+            app:layout_constraintHorizontal_bias="0.1"/>
+
 
     <TextView
             android:id="@+id/temperatureValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_super_large"
-            tools:text="33" android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
+            tools:text="33" android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="1dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/currentWeatherIcon"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/currentWeatherIcon"
             app:layout_constraintTop_toTopOf="@+id/currentWeatherIcon"/>
 
 
@@ -58,19 +70,76 @@
             android:text="@string/pressure_label"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/currentWeatherIcon" android:layout_marginTop="24dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/currentWeatherIcon"
+            android:layout_marginTop="24dp"/>
+
 
     <TextView
             android:id="@+id/pressureValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            tools:text="1033 hPa"
             android:textSize="@dimen/text_l"
-            android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toEndOf="@+id/pressureLabel"
+            tools:text="1033 hPa"
             app:layout_constraintBottom_toBottomOf="@+id/pressureLabel"
-            app:layout_constraintTop_toTopOf="@+id/pressureLabel" app:layout_constraintHorizontal_bias="0.2"/>
+            app:layout_constraintTop_toTopOf="@+id/pressureLabel"
+            app:layout_constraintStart_toStartOf="@+id/guideline"/>
+
+
+    <TextView
+            android:id="@+id/windSpeedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_l"
+            android:text="@string/wind_speed"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/pressureLabel"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <TextView
+            android:id="@+id/windSpeedValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_l"
+            tools:text="1.5 m/s"
+            app:layout_constraintBottom_toBottomOf="@+id/windSpeedLabel"
+            app:layout_constraintTop_toTopOf="@+id/windSpeedLabel"
+            app:layout_constraintStart_toStartOf="@+id/guideline"/>
+
+
+    <TextView
+            android:id="@+id/humidityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_l"
+            android:text="@string/humidity"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/windSpeedLabel"/>
+
+
+    <TextView
+            android:id="@+id/humidityValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_l"
+            tools:text="44%"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/humidityLabel"
+            app:layout_constraintBottom_toBottomOf="@+id/humidityLabel"/>
+
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_begin="144dp"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

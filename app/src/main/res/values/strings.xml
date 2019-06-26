@@ -27,6 +27,10 @@
     <string name="pressure_label">Pressure:</string>
     <string name="h_pascal_pressure">%1$d hPa</string>
     <string name="celsius_temperature">%1$d\u2103</string>
+    <string name="wind_speed">Wind speed:</string>
+    <string name="wind_speed_meters_per_second">%1$f m/s</string>
+    <string name="humidity">Humidity:</string>
+    <string name="humidity_percentage">%1$d%%</string>
 
     <string name="use_my_location">Use my location</string>
 

@@ -61,6 +61,8 @@ class CityWeatherDetailsFragment : Fragment() {
         currentWeatherIcon.setAnimation(weatherIcon)
         pressureValue.text = getString(R.string.h_pascal_pressure, pressure)
         currentWeatherDescription.text = getString(conditionStringRes).capitalize()
+        humidityValue.text = getString(R.string.humidity_percentage, airHumidity)
+        windSpeedValue.text = getString(R.string.wind_speed_meters_per_second, windSpeed)
     }
 
 }

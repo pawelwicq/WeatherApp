@@ -6,16 +6,19 @@ import com.wickowski.weatherapp.repository.net.WeatherCondition
 import com.wickowski.weatherapp.repository.net.WeatherForecast
 import kotlin.math.roundToInt
 
-fun WeatherForecast.toCityWeatherForecast(): CityCurrentWeather {
-    val temperature = main.temp.roundToInt()
-    val conditionStringRes = weather[0].condition.stringResource()
-    val pressure = main.pressure
-    val iconResource = "${weather[0].icon}.json"
+fun WeatherForecast.toCityWeatherForecast() = CityCurrentWeather(
+    cityId = cityId,
+    cityName = cityName,
+    temperature = main.temp.roundToInt(),
+    windSpeed = wind.speed,
+    airHumidity = main.humidity,
+    conditionStringRes = weather[0].condition.stringResource(),
+    pressure = main.pressure,
+    weatherIcon = "${weather[0].icon}.json"
+)
 
-    return CityCurrentWeather(cityId, cityName, temperature, conditionStringRes, pressure, iconResource)
-}
 
-fun WeatherCondition.stringResource() = when(this) {
+fun WeatherCondition.stringResource() = when (this) {
     WeatherCondition.THUNDERSTORM -> R.string.thunderstorm
     WeatherCondition.DRIZZLE -> R.string.drizzle
     WeatherCondition.RAIN -> R.string.rain
