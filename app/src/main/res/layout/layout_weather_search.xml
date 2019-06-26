@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/weatherSearchView"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/space_content">
+
+    <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:lottie_autoPlay="true"
+            app:lottie_repeatCount="3"
+            app:lottie_fileName="sunny.json"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/logo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/ic_clear_black"
+            app:endIconTint="@color/text_light"
+            style="@style/TextInputLayout.Light">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/search_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/LightEditText"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_btn_text"
+            style="@style/ColoredButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchInput"
+            app:layout_constraintHorizontal_bias="1.0"/>
+
+    <Button
+            android:id="@+id/getLocationBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp"
+            android:text="@string/use_my_location"
+            app:icon="@drawable/ic_location"
+            app:iconGravity="start"
+            app:iconTint="@color/text_light"
+            style="@style/TextButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchInput"
+            app:layout_constraintBottom_toTopOf="@+id/lastSearchCard"
+            app:layout_constraintVertical_bias="0.9"/>
+
+
+    <com.google.android.material.card.MaterialCardView
+            android:id="@+id/lastSearchCard"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            android:layout_height="@dimen/last_search_card_height"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginBottom="@dimen/space_content"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="visible">
+
+        <include layout="@layout/layout_last_search_card_content"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

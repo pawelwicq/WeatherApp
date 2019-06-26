@@ -13,4 +13,11 @@ data class CityCurrentWeather(
     val weatherIcon: String
 )
 
+data class ApiError(
+    val errorType: ErrorType,
+    @StringRes val messageStringRes: Int
+)
 
+enum class ErrorType {
+    HTTP_ERROR, NETWORK_ERROR, UNKNOWN
+}

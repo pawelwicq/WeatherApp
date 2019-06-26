@@ -41,6 +41,7 @@ class CityWeatherDetailsFragment : Fragment() {
             ?: throw IllegalStateException("City ID must be provided to this fragment")
         viewModel.loadCityWeatherDetails()
         closeBtn.setOnClickListener { findNavController().navigateUp() }
+        swipeToRefresh.setOnRefreshListener { viewModel.loadCityWeatherDetails() }
     }
 
     override fun onResume() {
@@ -50,9 +51,19 @@ class CityWeatherDetailsFragment : Fragment() {
 
 
     private fun handleWeatherState(state: CityWeatherDetailsState) = when (state) {
-        CityWeatherDetailsState.Loading -> showToast("Loading")
-        is CityWeatherDetailsState.Success -> updateCurrentWeatherData(state.currentWeather)
-        is CityWeatherDetailsState.Error -> showToast("Err")
+        CityWeatherDetailsState.Loading -> {
+            swipeToRefresh.isRefreshing = true
+            currentWeatherCard.visibility = View.GONE
+        }
+        is CityWeatherDetailsState.Success -> {
+            updateCurrentWeatherData(state.currentWeather)
+            swipeToRefresh.isRefreshing = false
+            currentWeatherCard.visibility = View.VISIBLE
+        }
+        is CityWeatherDetailsState.Error -> {
+            swipeToRefresh.isRefreshing = false
+            currentWeatherCard.visibility = View.GONE
+        }
     }
 
     private fun updateCurrentWeatherData(currentWeather: CityCurrentWeather) = with(currentWeather) {

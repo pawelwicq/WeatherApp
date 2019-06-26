@@ -33,5 +33,10 @@
     <string name="humidity_percentage">%1$d%%</string>
 
     <string name="use_my_location">Use my location</string>
+    <string name="network_error_message">Network connection error</string>
+    <string name="http_error_message">Server error</string>
+    <string name="unknown_error_message">Unknown error</string>
+    <string name="try_again">Try again</string>
+    <string name="default_progress_message">Loading</string>
 
 </resources>

@@ -10,8 +10,11 @@ import android.location.LocationManager
 import com.google.android.gms.location.LocationServices
 import android.content.Context.LOCATION_SERVICE
 import android.util.Log
+import android.view.View
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.wickowski.weatherapp.R
 
@@ -54,4 +57,16 @@ fun Fragment.showToast(message: String) = Toast.makeText(context, message, Toast
 fun Activity.showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
 fun TextInputLayout.getText() = this.editText?.text.toString()
+
+fun View.visible() {
+    visibility = View.VISIBLE
+}
+
+fun View.invisible() {
+    visibility = View.INVISIBLE
+}
+
+fun View.gone() {
+    visibility = View.GONE
+}
 

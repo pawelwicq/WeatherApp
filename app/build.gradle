@@ -36,6 +36,7 @@ dependencies {
     def play_services_version = '17.0.0'
     def material_version = '1.1.0-alpha07'
     def navigation_component_version = '1.0.0'
+    def liveevent_version = '1.0.1'
 
     // animations
     def lottie_version = '2.7.0'
@@ -84,6 +85,7 @@ dependencies {
     //lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    implementation "com.github.hadilq.liveevent:liveevent:$liveevent_version"
 
     // rest
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"

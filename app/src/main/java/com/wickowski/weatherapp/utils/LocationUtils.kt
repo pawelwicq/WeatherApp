@@ -13,5 +13,6 @@ object LocationUtils {
 
     fun buildLocationRequest(): LocationRequest = LocationRequest.create().apply {
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        interval = 400
     }
 }

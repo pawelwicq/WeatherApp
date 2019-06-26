@@ -1,9 +1,13 @@
 package com.wickowski.weatherapp.presentation.search
 
+import androidx.annotation.StringRes
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.hadilq.liveevent.LiveEvent
 import com.wickowski.weatherapp.domain.search_history.GetLastSearchCityIdUseCase
 import com.wickowski.weatherapp.domain.current_weather.GetCurrentWeatherUseCase
+import com.wickowski.weatherapp.domain.error.MapErrorUseCase
 import com.wickowski.weatherapp.domain.search_history.SaveLastSearchCityIdUseCase
 import com.wickowski.weatherapp.presentation.CityCurrentWeather
 import io.reactivex.Maybe
@@ -13,54 +17,59 @@ import io.reactivex.schedulers.Schedulers
 class WeatherSearchViewModel(
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
     private val getLastSearchCityIdUseCase: GetLastSearchCityIdUseCase,
-    private val saveLastSearchCityIdUseCase: SaveLastSearchCityIdUseCase
+    private val saveLastSearchCityIdUseCase: SaveLastSearchCityIdUseCase,
+    private val mapErrorUseCase: MapErrorUseCase
 ) : ViewModel() {
 
-    val weatherSearchState = MutableLiveData<WeatherState>()
-    val lastSearchState = MutableLiveData<LastSearchState>()
+    val weatherSearchState = MutableLiveData<WeatherSearchState>()
+    val lastSearchState = MutableLiveData<CityCurrentWeather>()
+    val searchResultEvent= MutableLiveData<CityCurrentWeather?>()
+
     private var searchDisposable: Disposable? = null
     private var lastSearchDisposable: Disposable? = null
 
     fun loadDataForCityName(cityName: String) {
+        weatherSearchState.postValue(WeatherSearchState.Loading)
         searchDisposable?.dispose()
         searchDisposable = getCurrentWeatherUseCase.executeForCityName(cityName)
-            .doOnSubscribe { weatherSearchState.postValue(WeatherState.Loading) }
             .subscribeOn(Schedulers.io())
             .flatMapCompletable {
-                weatherSearchState.postValue(WeatherState.Success(it))
-                weatherSearchState.postValue(WeatherState.Idle)
+                weatherSearchState.postValue(WeatherSearchState.Idle)
+                searchResultEvent.postValue(it)
                 saveLastSearchCityIdUseCase.execute(it.cityId)
-            }.subscribe({ }, { weatherSearchState.postValue(WeatherState.Error(it.message ?: "")) })
+            }
+            .subscribe({}, ::handleWeatherSearchError)
     }
 
     fun loadDataForLocation(latitude: Double, longitude: Double) {
+        weatherSearchState.postValue(WeatherSearchState.Loading)
         searchDisposable?.dispose()
         searchDisposable = getCurrentWeatherUseCase.executeForLocation(latitude, longitude)
-            .doOnSubscribe { weatherSearchState.postValue(WeatherState.Loading) }
             .subscribeOn(Schedulers.io())
             .flatMapCompletable {
-                weatherSearchState.postValue(WeatherState.Success(it))
-                weatherSearchState.postValue(WeatherState.Idle)
+                weatherSearchState.postValue(WeatherSearchState.Idle)
+                searchResultEvent.postValue(it)
                 saveLastSearchCityIdUseCase.execute(it.cityId)
             }
-            .subscribe({ }, { weatherSearchState.postValue(WeatherState.Error(it.message ?: "")) })
+            .subscribe({}, ::handleWeatherSearchError)
     }
 
     fun loadLastCityForecast() {
         lastSearchDisposable = getLastSearchCityIdUseCase.execute()
             .subscribeOn(Schedulers.io())
             .flatMapMaybe {
-                if (it.isNotEmpty()) {
-                    getCurrentWeatherUseCase.executeForCityId(it).toMaybe()
-                } else {
-                    lastSearchState.postValue(LastSearchState.EmptyLastSearchForecast)
-                    Maybe.empty()
-                }
+                if (it.isNotEmpty()) getCurrentWeatherUseCase.executeForCityId(it).toMaybe()
+                else Maybe.empty()
             }
             .subscribe(
-                { lastSearchState.postValue(LastSearchState.LastSearchForecast(it)) },
-                { lastSearchState.postValue(LastSearchState.LastSearchForecastError(it.message ?: "")) }
+                { lastSearchState.postValue(it) },
+                { it.printStackTrace() }
             )
+    }
+
+    private fun handleWeatherSearchError(throwable: Throwable) {
+        val apiError = mapErrorUseCase.execute(throwable)
+        weatherSearchState.postValue(WeatherSearchState.Error(apiError.messageStringRes))
     }
 
     override fun onCleared() {
@@ -69,17 +78,10 @@ class WeatherSearchViewModel(
         lastSearchDisposable?.dispose()
     }
 
-    sealed class WeatherState {
-        object Loading : WeatherState()
-        data class Error(val message: String) : WeatherState()
-        data class Success(val currentWeather: CityCurrentWeather) : WeatherState()
-        object Idle : WeatherState()
-    }
-
-    sealed class LastSearchState {
-        object EmptyLastSearchForecast : LastSearchState()
-        data class LastSearchForecast(val currentWeather: CityCurrentWeather) : LastSearchState()
-        data class LastSearchForecastError(val message: String) : LastSearchState()
+    sealed class WeatherSearchState {
+        object Loading : WeatherSearchState()
+        data class Error(@StringRes val messageRes: Int) : WeatherSearchState()
+        object Idle : WeatherSearchState()
     }
 
 }
