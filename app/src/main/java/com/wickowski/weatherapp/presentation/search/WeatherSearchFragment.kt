@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.layout_progress_view.*
 import kotlinx.android.synthetic.main.layout_weather_search.*
 
 
-private const val GPS_REQUEST_CODE = 1000
+const val TURN_GPS_ON_REQUEST_CODE = 1000
 
 class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFailedListener {
 
@@ -96,7 +96,7 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
     private fun getWeatherForCurrentLocation() = RxPermissions(this).request(
         Manifest.permission.ACCESS_FINE_LOCATION
     ).subscribe { granted ->
-        if (granted) turnGPSOn(GPS_REQUEST_CODE) { isOn -> if (isOn) getLocation() }
+        if (granted) turnGPSOn(TURN_GPS_ON_REQUEST_CODE) { isOn -> if (isOn) getLocation() }
         else showToast(getString(R.string.missing_permissions_error))
     }
 
@@ -184,7 +184,7 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == GPS_REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == TURN_GPS_ON_REQUEST_CODE) {
             getLocation()
         }
     }
