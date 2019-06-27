@@ -2,7 +2,7 @@ package com.wickowski.weatherapp.repository.shared_prefs
 
 import android.content.SharedPreferences
 
-private val SHARED_PREFS_LAST_CITY_ID = "LAST_CITY_ID"
+private const val SHARED_PREFS_LAST_CITY_ID = "LAST_CITY_ID"
 
 class SearchHistoryProvider(private val prefs: SharedPreferences) {
 

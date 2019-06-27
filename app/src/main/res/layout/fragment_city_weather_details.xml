@@ -46,13 +46,12 @@
 
                 </LinearLayout>
 
-
             </ScrollView>
 
         </LinearLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/layout_error_view" />
+    <include layout="@layout/layout_error_view"/>
 
 </FrameLayout>

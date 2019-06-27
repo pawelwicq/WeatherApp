@@ -28,19 +28,34 @@ data class Weather(
 )
 
 enum class WeatherCondition {
-    @Json(name = "Thunderstorm") THUNDERSTORM,
-    @Json(name = "Drizzle") DRIZZLE,
-    @Json(name = "Rain") RAIN,
-    @Json(name = "Snow") SNOW,
-    @Json(name = "Mist") MIST,
-    @Json(name = "Smoke") SMOKE,
-    @Json(name = "Haze") HAZE,
-    @Json(name = "Dust") DUST,
-    @Json(name = "Fog") FOG,
-    @Json(name = "Sand") SAND,
-    @Json(name = "Ash") ASH,
-    @Json(name = "Squall") SQUALL,
-    @Json(name = "Tornado") TORNADO,
-    @Json(name = "Clear") CLEAR,
-    @Json(name = "Clouds") CLOUDS
+    @Json(name = "Thunderstorm")
+    THUNDERSTORM,
+    @Json(name = "Drizzle")
+    DRIZZLE,
+    @Json(name = "Rain")
+    RAIN,
+    @Json(name = "Snow")
+    SNOW,
+    @Json(name = "Mist")
+    MIST,
+    @Json(name = "Smoke")
+    SMOKE,
+    @Json(name = "Haze")
+    HAZE,
+    @Json(name = "Dust")
+    DUST,
+    @Json(name = "Fog")
+    FOG,
+    @Json(name = "Sand")
+    SAND,
+    @Json(name = "Ash")
+    ASH,
+    @Json(name = "Squall")
+    SQUALL,
+    @Json(name = "Tornado")
+    TORNADO,
+    @Json(name = "Clear")
+    CLEAR,
+    @Json(name = "Clouds")
+    CLOUDS
 }

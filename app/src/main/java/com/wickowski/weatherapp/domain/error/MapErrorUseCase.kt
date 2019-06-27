@@ -11,7 +11,10 @@ import java.net.UnknownHostException
 class MapErrorUseCase {
 
     fun execute(throwable: Throwable): ApiError = when (throwable) {
-        is UnknownHostException, is SocketTimeoutException, is ConnectException -> ApiError(ErrorType.NETWORK_ERROR, R.string.network_error_message)
+        is UnknownHostException, is SocketTimeoutException, is ConnectException -> ApiError(
+            ErrorType.NETWORK_ERROR,
+            R.string.network_error_message
+        )
         is HttpException -> ApiError(ErrorType.HTTP_ERROR, R.string.http_error_message)
         else -> ApiError(ErrorType.UNKNOWN, R.string.unknown_error_message)
     }

@@ -7,8 +7,8 @@
 
     <include layout="@layout/layout_weather_search"/>
 
-    <include layout="@layout/layout_error_view" />
+    <include layout="@layout/layout_error_view"/>
 
-    <include layout="@layout/layout_progress_view" />
+    <include layout="@layout/layout_progress_view"/>
 
 </FrameLayout>

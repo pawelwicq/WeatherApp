@@ -21,7 +21,7 @@ class WeatherSearchViewModel(
 
     val weatherSearchState = MutableLiveData<WeatherSearchState>()
     val lastSearchState = MutableLiveData<CityCurrentWeather>()
-    val searchResultEvent= LiveEvent<CityCurrentWeather?>()
+    val searchResultEvent = LiveEvent<CityCurrentWeather?>()
 
     private var searchDisposable: Disposable? = null
     private var lastSearchDisposable: Disposable? = null

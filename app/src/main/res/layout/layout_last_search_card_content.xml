@@ -60,7 +60,6 @@
 
             </LinearLayout>
 
-
             <TextView
                     android:id="@+id/lastSearchTemperature"
                     android:layout_width="0dp"
@@ -69,7 +68,6 @@
                     android:gravity="center"
                     android:textSize="@dimen/text_xxxl"
                     tools:text="27"/>
-
 
         </LinearLayout>
 

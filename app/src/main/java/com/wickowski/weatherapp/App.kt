@@ -7,7 +7,7 @@ import com.wickowski.weatherapp.di.viewModelsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class App: Application() {
+class App : Application() {
 
     private val koinModules = listOf(dataModule, useCasesModule, viewModelsModule)
 
