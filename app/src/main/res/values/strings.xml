@@ -38,5 +38,6 @@
     <string name="unknown_error_message">Unknown error</string>
     <string name="try_again">Try again</string>
     <string name="default_progress_message">Loading</string>
+    <string name="trying_to_obtain_location">Trying to obtain location</string>
 
 </resources>

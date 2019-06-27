@@ -19,23 +19,12 @@ class WeatherSearchViewModel(
     private val mapErrorUseCase: MapErrorUseCase
 ) : ViewModel() {
 
-    private val weatherSearchState = MutableLiveData<WeatherSearchState>()
-    private val lastSearchState = MutableLiveData<CityCurrentWeather>()
-    private val searchResultEvent= MutableLiveData<CityCurrentWeather?>()
+    val weatherSearchState = MutableLiveData<WeatherSearchState>()
+    val lastSearchState = MutableLiveData<CityCurrentWeather>()
+    val searchResultEvent= LiveEvent<CityCurrentWeather?>()
 
     private var searchDisposable: Disposable? = null
     private var lastSearchDisposable: Disposable? = null
-
-    fun observeSearchState(viewLifecycleOwner: LifecycleOwner, observer: Observer<WeatherSearchState>)
-            = weatherSearchState.observe(viewLifecycleOwner, observer)
-
-    fun observeLastSearchState(viewLifecycleOwner: LifecycleOwner, observer: Observer<CityCurrentWeather>)
-            = lastSearchState.observe(viewLifecycleOwner, observer)
-
-    fun observeSearchResultEvent(viewLifecycleOwner: LifecycleOwner, observer: Observer<CityCurrentWeather?>) {
-        searchResultEvent.value = null
-        searchResultEvent.observe(viewLifecycleOwner, observer)
-    }
 
     fun loadDataForCityName(cityName: String) {
         weatherSearchState.postValue(WeatherSearchState.Loading)

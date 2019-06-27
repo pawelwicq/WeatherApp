@@ -40,10 +40,7 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
 
     private val viewModel: WeatherSearchViewModel by viewModel()
     private val stateObserver = Observer<WeatherSearchViewModel.WeatherSearchState> { handleWeatherState(it) }
-    private val searchResultObserver = Observer<CityCurrentWeather?> {
-        Log.e("ERR", "$it")
-        handleSearchResult(it)
-    }
+    private val searchResultObserver = Observer<CityCurrentWeather?> { handleSearchResult(it) }
     private val lastSearchObserver = Observer<CityCurrentWeather> { handleLastSearch(it) }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -67,13 +64,17 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
         showSearchView()
         initGoogleApiClient()
         initView()
+        observeViewModelData()
+    }
+
+    private fun observeViewModelData() {
+        viewModel.observeSearchState(viewLifecycleOwner, stateObserver)
+        viewModel.observeLastSearchState(viewLifecycleOwner, lastSearchObserver)
+        viewModel.observeSearchResultEvent(viewLifecycleOwner, searchResultObserver)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.observeSearchState(viewLifecycleOwner, stateObserver)
-        viewModel.observeLastSearchState(viewLifecycleOwner, lastSearchObserver)
-        viewModel.observeSearchResultEvent(viewLifecycleOwner, searchResultObserver)
         viewModel.loadLastCityForecast()
     }
 
@@ -101,11 +102,14 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
     }
 
     @SuppressLint("MissingPermission")  // permissions are already checked by rxpermissions
-    private fun getLocation() = fusedLocationClient.requestLocationUpdates(
-        LocationUtils.buildLocationRequest(),
-        locationCallback,
-        null
-    )
+    private fun getLocation() {
+        showToast(getString(R.string.trying_to_obtain_location))
+        fusedLocationClient.requestLocationUpdates(
+            LocationUtils.buildLocationRequest(),
+            locationCallback,
+            null
+        )
+    }
 
     private fun search(text: String) {
         if (text.isNotEmpty()) viewModel.loadDataForCityName(text)
@@ -156,10 +160,12 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
         lastSearchWeatherIcon.setAnimation(weatherIcon)
         lastSearchCard.setOnClickListener { navigateToCityDetails(cityId) }
         AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom).also { slideInAnim ->
-            slideInAnim.setAnimationListener(object: Animation.AnimationListener {
+            slideInAnim.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(p0: Animation?) {}
                 override fun onAnimationStart(p0: Animation?) {}
-                override fun onAnimationEnd(p0: Animation?) { lastSearchCard?.visible() }
+                override fun onAnimationEnd(p0: Animation?) {
+                    lastSearchCard?.visible()
+                }
             })
             lastSearchCard.startAnimation(slideInAnim)
         }

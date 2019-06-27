@@ -62,6 +62,8 @@ dependencies {
     def junit_version = '4.12'
     def test_runner_version = '1.2.0'
     def espresso_version = '3.2.0'
+    def mockito_version ='1.10.19'
+    def mockito_kotlin_version = '2.1.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -104,6 +106,8 @@ dependencies {
     // test
     testImplementation "junit:junit:$junit_version"
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    testImplementation 'org.mockito:mockito-inline:2.25.0'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }
