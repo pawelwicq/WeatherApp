@@ -10,7 +10,7 @@
             android:layout_height="match_parent">
 
         <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true">
@@ -45,7 +45,6 @@
                     </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
-
 
             </ScrollView>
 

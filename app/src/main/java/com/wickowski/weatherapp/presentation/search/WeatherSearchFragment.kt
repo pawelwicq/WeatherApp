@@ -28,6 +28,7 @@ import com.google.android.gms.location.*
 import com.wickowski.weatherapp.utils.*
 import kotlinx.android.synthetic.main.layout_error_view.*
 import kotlinx.android.synthetic.main.layout_error_view.view.*
+import kotlinx.android.synthetic.main.layout_last_search_card_content.view.*
 import kotlinx.android.synthetic.main.layout_progress_view.*
 import kotlinx.android.synthetic.main.layout_weather_search.*
 
@@ -163,7 +164,7 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
         if (!lastSearchCard.isVisible) {
             lastSearchCard.animate(R.anim.slide_in_bottom) {
                 lastSearchCard?.visible()
-                lastSearchWeatherIcon.setAnimation(weatherIcon)
+                lastSearchCard?.lastSearchWeatherIcon?.setAnimation(weatherIcon)
             }
         }
     }

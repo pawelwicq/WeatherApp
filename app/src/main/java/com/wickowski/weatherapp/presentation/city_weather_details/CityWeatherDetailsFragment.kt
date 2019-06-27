@@ -9,13 +9,17 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.wickowski.weatherapp.R
 import com.wickowski.weatherapp.presentation.CityCurrentWeather
+import com.wickowski.weatherapp.presentation.city_weather_details.CityWeatherDetailsViewModel.CityWeatherDetailsState.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.lang.IllegalStateException
 import com.wickowski.weatherapp.presentation.city_weather_details.CityWeatherDetailsViewModel.*
-import com.wickowski.weatherapp.utils.showToast
+import com.wickowski.weatherapp.utils.gone
+import com.wickowski.weatherapp.utils.visible
 import kotlinx.android.synthetic.main.fragment_city_weather_details.*
 import kotlinx.android.synthetic.main.layout_current_weather_details_card.*
+import kotlinx.android.synthetic.main.layout_error_view.*
+import kotlinx.android.synthetic.main.layout_error_view.view.*
 
 private const val CITY_ID_BUNDLE_EXTRA = "CITY_ID"
 
@@ -41,7 +45,7 @@ class CityWeatherDetailsFragment : Fragment() {
             ?: throw IllegalStateException("City ID must be provided to this fragment")
         viewModel.loadCityWeatherDetails()
         closeBtn.setOnClickListener { findNavController().navigateUp() }
-        swipeToRefresh.setOnRefreshListener { viewModel.loadCityWeatherDetails() }
+        weatherDataContainer.setOnRefreshListener { viewModel.loadCityWeatherDetails() }
     }
 
     override fun onResume() {
@@ -49,21 +53,30 @@ class CityWeatherDetailsFragment : Fragment() {
         viewModel.cityWeatherDetailsState.observe(viewLifecycleOwner, weatherStateObserver)
     }
 
-
     private fun handleWeatherState(state: CityWeatherDetailsState) = when (state) {
-        CityWeatherDetailsState.Loading -> {
-            swipeToRefresh.isRefreshing = true
-            currentWeatherCard.visibility = View.GONE
-        }
-        is CityWeatherDetailsState.Success -> {
-            updateCurrentWeatherData(state.currentWeather)
-            swipeToRefresh.isRefreshing = false
-            currentWeatherCard.visibility = View.VISIBLE
-        }
-        is CityWeatherDetailsState.Error -> {
-            swipeToRefresh.isRefreshing = false
-            currentWeatherCard.visibility = View.GONE
-        }
+        Loading -> showLoading()
+        is Success -> showWeatherData(state.currentWeather)
+        is Error -> showErrorView(state)
+    }
+
+    private fun showLoading() {
+        weatherDataContainer.isRefreshing = true
+        errorView.gone()
+    }
+
+    private fun showWeatherData(currentWeather: CityCurrentWeather) {
+        weatherDataContainer.visible()
+        weatherDataContainer.isRefreshing = false
+        errorView.gone()
+        updateCurrentWeatherData(currentWeather)
+    }
+
+    private fun showErrorView(state: Error) {
+        weatherDataContainer.isRefreshing = false
+        weatherDataContainer.gone()
+        errorView.visible()
+        errorView.errorMessage.text = getString(state.messageRes)
+        tryAgainBtn.setOnClickListener { viewModel.loadCityWeatherDetails() }
     }
 
     private fun updateCurrentWeatherData(currentWeather: CityCurrentWeather) = with(currentWeather) {
