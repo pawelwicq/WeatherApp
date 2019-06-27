@@ -24,5 +24,5 @@ val useCasesModule = module {
 
 val viewModelsModule = module {
     viewModel { WeatherSearchViewModel(get(), get(), get(), get()) }
-    viewModel { (cityId: String) -> CityWeatherDetailsViewModel(cityId, get()) }
+    viewModel { (cityId: String) -> CityWeatherDetailsViewModel(cityId, get(), get()) }
 }

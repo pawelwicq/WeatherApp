@@ -11,12 +11,16 @@ import com.google.android.gms.location.LocationServices
 import android.content.Context.LOCATION_SERVICE
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.annotation.AnimRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.wickowski.weatherapp.R
+import kotlinx.android.synthetic.main.layout_weather_search.*
 
 fun Fragment.turnGPSOn(requestCode: Int, gpsStatusChanged: (Boolean) -> Unit) {
     activity?.turnGPSOn(requestCode, gpsStatusChanged)
@@ -68,5 +72,18 @@ fun View.invisible() {
 
 fun View.gone() {
     visibility = View.GONE
+}
+
+fun View.animate(@AnimRes animationResId: Int, onAnimationEnd: () -> Unit) {
+    AnimationUtils.loadAnimation(context, animationResId).also { slideInAnim ->
+        slideInAnim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(p0: Animation?) {}
+            override fun onAnimationStart(p0: Animation?) {}
+            override fun onAnimationEnd(p0: Animation?) {
+                onAnimationEnd.invoke()
+            }
+        })
+        startAnimation(slideInAnim)
+    }
 }
 

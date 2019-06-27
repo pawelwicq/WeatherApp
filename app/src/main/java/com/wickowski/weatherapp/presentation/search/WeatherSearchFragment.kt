@@ -5,12 +5,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -111,9 +109,13 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
         )
     }
 
-    private fun search(text: String) {
-        if (text.isNotEmpty()) viewModel.loadDataForCityName(text)
+    private fun search(text: String) = if (text.isNotEmpty()) {
+        searchInput.editText?.error = null
+        viewModel.loadDataForCityName(text.trim())
+    } else {
+        searchInput.editText?.error = getString(R.string.empty_city_name)
     }
+
 
     private fun handleWeatherState(state: WeatherSearchViewModel.WeatherSearchState) = when (state) {
         Loading -> showProgressView()
@@ -157,17 +159,12 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
         lastSearchCityName.text = cityName
         lastSearchWeather.text = getString(conditionStringRes)
         lastSearchTemperature.text = getString(R.string.celsius_temperature, temperature)
-        lastSearchWeatherIcon.setAnimation(weatherIcon)
         lastSearchCard.setOnClickListener { navigateToCityDetails(cityId) }
-        AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom).also { slideInAnim ->
-            slideInAnim.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(p0: Animation?) {}
-                override fun onAnimationStart(p0: Animation?) {}
-                override fun onAnimationEnd(p0: Animation?) {
-                    lastSearchCard?.visible()
-                }
-            })
-            lastSearchCard.startAnimation(slideInAnim)
+        if (!lastSearchCard.isVisible) {
+            lastSearchCard.animate(R.anim.slide_in_bottom) {
+                lastSearchCard?.visible()
+                lastSearchWeatherIcon.setAnimation(weatherIcon)
+            }
         }
     }
 

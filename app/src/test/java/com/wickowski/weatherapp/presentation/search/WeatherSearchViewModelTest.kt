@@ -39,28 +39,28 @@ class WeatherSearchViewModelTest {
         weatherIcon = "01d.json"
     )
 
-    val mockGetCurrentWeatherUseCase = mock<GetCurrentWeatherUseCase> {
+    private val mockGetCurrentWeatherUseCase = mock<GetCurrentWeatherUseCase> {
         on { executeForCityName(any()) } doReturn Single.just(currentWeather)
         on { executeForLocation(any(), any()) } doReturn Single.just(currentWeather)
         on { executeForCityId(any()) } doReturn Single.just(currentWeather)
     }
 
-    val mockErrorGetCurrentWeatherUseCase = mock<GetCurrentWeatherUseCase> {
+    private val mockErrorGetCurrentWeatherUseCase = mock<GetCurrentWeatherUseCase> {
         on { executeForCityName(any()) } doReturn Single.error(Exception("Exception message"))
         on { executeForLocation(any(), any()) } doReturn Single.error(Exception("Exception message"))
         on { executeForCityId(any()) } doReturn Single.error(Exception("Exception message"))
     }
 
-    val mockSaveLastSearchCityIdUseCase = mock<SaveLastSearchCityIdUseCase> {
+    private val mockSaveLastSearchCityIdUseCase = mock<SaveLastSearchCityIdUseCase> {
         on { execute(any()) } doReturn Completable.complete()
     }
 
 
-    val mockGetLastSearchCityIdUseCase = mock<GetLastSearchCityIdUseCase> {
+    private val mockGetLastSearchCityIdUseCase = mock<GetLastSearchCityIdUseCase> {
         on { execute() } doReturn Single.just("333")
     }
 
-    val mockEmptyGetLastSearchCityIdUseCase = mock<GetLastSearchCityIdUseCase> {
+    private val mockEmptyGetLastSearchCityIdUseCase = mock<GetLastSearchCityIdUseCase> {
         on { execute() } doReturn Single.just("")
     }
 
