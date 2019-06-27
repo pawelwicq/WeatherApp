@@ -14,13 +14,9 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.annotation.AnimRes
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.wickowski.weatherapp.R
-import kotlinx.android.synthetic.main.layout_weather_search.*
 
 fun Fragment.turnGPSOn(requestCode: Int, gpsStatusChanged: (Boolean) -> Unit) {
     activity?.turnGPSOn(requestCode, gpsStatusChanged)
