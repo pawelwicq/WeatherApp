@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.wickowski.weatherapp.domain.current_weather.GetCurrentWeatherUseCase
 import com.wickowski.weatherapp.domain.error.MapErrorUseCase
 import com.wickowski.weatherapp.presentation.CityCurrentWeather
+import com.wickowski.weatherapp.presentation.city_weather_details.CityWeatherDetailsViewModel.CityWeatherDetailsState.*
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
@@ -21,14 +22,14 @@ class CityWeatherDetailsViewModel(
     fun loadCityWeatherDetails() {
         disposable?.dispose()
         disposable = getCurrentWeatherUseCase.executeForCityId(cityId)
-            .doOnSubscribe { cityWeatherDetailsState.postValue(CityWeatherDetailsState.Loading) }
+            .doOnSubscribe { cityWeatherDetailsState.postValue(Loading) }
             .subscribeOn(Schedulers.io())
-            .subscribe({ cityWeatherDetailsState.postValue(CityWeatherDetailsState.Success(it)) }, ::handleError)
+            .subscribe({ cityWeatherDetailsState.postValue(LoadingSuccess(it)) }, ::handleError)
     }
 
     private fun handleError(throwable: Throwable) {
         val error = mapErrorUseCase.execute(throwable)
-        cityWeatherDetailsState.postValue(CityWeatherDetailsState.Error(error.messageStringRes))
+        cityWeatherDetailsState.postValue(Error(error.messageStringRes))
     }
 
     override fun onCleared() {
@@ -38,7 +39,7 @@ class CityWeatherDetailsViewModel(
 
     sealed class CityWeatherDetailsState {
         object Loading : CityWeatherDetailsState()
-        data class Success(val currentWeather: CityCurrentWeather) : CityWeatherDetailsState()
+        data class LoadingSuccess(val currentWeather: CityCurrentWeather) : CityWeatherDetailsState()
         data class Error(@StringRes val messageRes: Int) : CityWeatherDetailsState()
     }
 

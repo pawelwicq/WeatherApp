@@ -55,7 +55,7 @@ class CityWeatherDetailsFragment : Fragment() {
 
     private fun handleWeatherState(state: CityWeatherDetailsState) = when (state) {
         Loading -> showLoading()
-        is Success -> showWeatherData(state.currentWeather)
+        is LoadingSuccess -> showWeatherData(state.currentWeather)
         is Error -> showErrorView(state)
     }
 
