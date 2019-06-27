@@ -68,9 +68,9 @@ class WeatherSearchFragment : Fragment(), ConnectionCallbacks, OnConnectionFaile
     }
 
     private fun observeViewModelData() {
-        viewModel.observeSearchState(viewLifecycleOwner, stateObserver)
-        viewModel.observeLastSearchState(viewLifecycleOwner, lastSearchObserver)
-        viewModel.observeSearchResultEvent(viewLifecycleOwner, searchResultObserver)
+        viewModel.weatherSearchState.observe(viewLifecycleOwner, stateObserver)
+        viewModel.lastSearchState.observe(viewLifecycleOwner, lastSearchObserver)
+        viewModel.searchResultEvent.observe(viewLifecycleOwner, searchResultObserver)
     }
 
     override fun onResume() {
